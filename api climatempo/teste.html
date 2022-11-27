@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="./site/src/index.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>teste</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
+    </style>
+</head>
+<body>
+    <div>
+        <input type="text" placeholder="Ex.: São Paulo,São Paulo" id="nomeLocal_input">
+        <button onclick=enviar()>Enviar</button>
+        <div id="cardErro">
+            <p id="mensagem_erro"></p>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card_1">
+            <div class="e">
+                <p class="temp" id="p_temp">
+                    20º
+                </p>
+                <p class="lugar" id="p_lugar">
+                    18/11, Sexta-Feira <br>
+                    São Paulo, São Paulo
+                </p>
+                <div class="carrossel">
+                    <input type="radio" name="radio-btn" id="radio1">
+                    <input type="radio" name="radio-btn" id="radio2">
+    
+                    <div class="navigation-auto">
+                        <div class="auto-btn1"></div>
+                        <div class="auto-btn2"></div>
+                    </div>
+        
+                    <div class="manual-navigation">
+                        <label for="radio1" class="manual-btn"></label>
+                        <label for="radio2" class="manual-btn"></label>
+                    </div>
+            </div>
+            
+            </div>
+            <div class="f">
+                <div class="trocar" onclick="mudar()">
+                    <img src="C:\Users\gabbe\Desktop\PROJETO INDIVIDUAL\api climatempo\imagem\Frame (1).png">
+                </div>
+                <p class="texto" id="climatexto">
+                    Chuvoso
+                </p>
+                <span class="img"id="img">
+                    <img src="C:\Users\gabbe\Desktop\PROJETO INDIVIDUAL\api climatempo\imagem\rain_cloud_forecast_weather_temperature_icon_194372 1.png">
+                </span>
+            </div>
+
+            
+
+            
+                
+            
+        </div>
+        <div class="card_2">
+            <div class="a" id="1">Sabado</div>
+            <div class="b" id="2">Domingo</div>
+            <div class="c" id="3">Segunda-Feira</div>
+            <div class="d" id="4">Terça-Feira</div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+
+    function obterDados(fkLugar){
+        if (proximaAtualizacao != undefined) {
+            clearTimeout(proximaAtualizacao);
+        }
+
+        fetch(`/clima/listar/${fkLugar}`, { cache: 'no-store' }).then(function (response) {
+            if (response.ok) {
+                response.json().then(function (resposta) {
+                    console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
+                    resposta.reverse();
+
+                    plotarGrafico(resposta, fkLugar);
+                });
+            } else {
+                console.error('Nenhum dado encontrado ou erro na API');
+            }
+        })
+            .catch(function (error) {
+                console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+            });
+
+}
+
+    function plotarDados(resposta, fkLugar){
+        
+
+    }
+
+    
+</script>
