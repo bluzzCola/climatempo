@@ -1,13 +1,10 @@
 import datetime
 from datetime import date
 from distutils.command.config import config
-import time
-import mysql.connector
 from pyodbc import Error
 from this import d
 import requests
 import json
-import pprint
 import urllib.parse
 from urllib.parse import quote
 import textwrap
