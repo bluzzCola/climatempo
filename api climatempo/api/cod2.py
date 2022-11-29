@@ -3,16 +3,18 @@ from datetime import date
 from distutils.command.config import config
 import time
 import mysql.connector
-from mysql.connector import errorcode
+from pyodbc import Error
 from this import d
 import requests
 import json
 import pprint
 import urllib.parse
 from urllib.parse import quote
-import numpy
+import textwrap
+import pyodbc
 
-accuweatherAPIKey = "cS1J2TPz5pGDKljGWVWpGsWn9rTnKNAk"
+
+accuweatherAPIKey = "sCfra16EjICZsDzpTSNAtDn9Hp3IuuIi"
 mapboxToken = "pk.eyJ1IjoiYXJvbm5pIiwiYSI6ImNsYTczOGZxejBqbnczdmxkNjNuN3Q1bTIifQ.0tBJGc81IZLQopZnQ--cPg"
 # my_date = datetime.today() # if date is 01/01/2018
 # year, week_num, day_of_week = my_date.isocalendar()
@@ -113,25 +115,57 @@ def pegarPrevisao5Dias(codigoLocal):
 
     ##Inicio do cod
 ##Conexão com o banco
-config = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': '#Gf232623',
-    'database': 'projeto_pi'
-}
-
 try:
-    conn = mysql.connector.connect(**config)
-    print("Connection established")
-except mysql.connector.Error as err:
-  if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-    print("Something is wrong with the user name or password")
-  elif err.errno == errorcode.ER_BAD_DB_ERROR:
-    print("Database does not exist")
-  else:
-    print(err)
-else:
-  cursor = conn.cursor()
+        driver ='{ODBC Driver 18 for SQL Server}'
+        server_name = 'testeclimatempo'
+        database_name = 'projetoIndividual'
+        server = '{server_name}.database.windows.net,1433'.format(server_name=server_name)
+        username = 'grupo10sis'
+        password = 'Magna@tech2022'
+        # definindo banco url 
+        connection_string = textwrap.dedent('''
+        Driver={driver};
+        Server={server};
+        Database={database};
+        Uid={username};
+        Pwd={password};
+        Encrypt=yes;
+        TrustedServerCertificate=no;
+        Connection Timeout=10;
+        '''.format(
+            driver=driver,
+            server=server,
+            database=database_name,
+            username=username,
+            password=password
+        )) 
+
+        cnxn:pyodbc.Connection = pyodbc.connect(connection_string) 
+
+        crsr = cnxn.cursor()
+        print("Conectado ao banco de dados:")
+except:
+    print('nao conectou')
+
+# config = {
+#     'host': 'localhost',
+#     'user': 'root',
+#     'password': '#Gf232623',
+#     'database': 'projeto_pi'
+# }
+
+# try:
+#     conn = mysql.connector.connect(**config)
+#     print("Connection established")
+# except mysql.connector.Error as err:
+#   if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+#     print("Something is wrong with the user name or password")
+#   elif err.errno == errorcode.ER_BAD_DB_ERROR:
+#     print("Database does not exist")
+#   else:
+#     print(err)
+# else:
+#   cursor = conn.cursor()
 
 #cod para envio dos dados da
 # dataHora = datetime()
@@ -154,11 +188,11 @@ def pesquisarLocal(local):
         except:
             print('Erro na pesquisa de local.')
 
-if conn.is_connected:
+try:
     select = ('SELECT * FROM lugar')
     # for i in enumerate(select): 
-    cursor.execute(select)
-    resultado = cursor.fetchall()
+    crsr.execute(select)
+    resultado = crsr.fetchall()
     for data in resultado:
         print("Cidade: ", data[1])
         coord = pesquisarLocal(data[1])
@@ -168,19 +202,22 @@ if conn.is_connected:
         climaAtual = pegarTempoAgora(local['codigoLocal'], local['nomeLocal'])
         print(climaAtual)
         try:
-            sql =  ('INSERT INTO tempLocal(textoClima,temperatura,fkLocal) VALUES(%s,%s,%s)')
+            sql =  ('')
+            tc = infoClima['textoClima']
+            temp = infoClima['temperatura']
+            dt = data[0]
+            crsr.execute('''
+            INSERT INTO tempLocal(textoClima,temperatura,fkLocal) VALUES(?,?,?)
+            ''',tc,temp,dt)
+            crsr.commit()
             print('Dados enviados')
-            values = (infoClima['textoClima'],infoClima['temperatura'], data[0])
-            cursor.execute(sql, values)
-            conn.commit()
         except:
             print('erro ao enviar para banco')
-else:
+except:
     print('algo deu errado')
 
-if conn.is_connected():
+try:
     print(resultado)
-    insert = 'INSERT INTO tempSemana(diaMes, diaSemana, climaMax, climaMin, climaTexto, fkLocal) VALUES(%s,%s,%s,%s,%s,%s)'
     for id in resultado:
         coord = pesquisarLocal(id[1])
         local = pegarCodigoLocal(coord['lat'],coord['long'])
@@ -190,9 +227,18 @@ if conn.is_connected():
             for i, data in enumerate(semana):
                 print(i, data)
                 dados = (data['diaMes'],data['diaSemana'],data['max'],data['min'],data['clima'], id[0])
-                cursor.execute(insert, dados)
-                conn.commit()
-        except:
+                dm = data['diaMes']
+                ds = data['diaSemana']
+                max = data['max']
+                min = data['min']
+                c = data['clima']
+                fk = id[0]
+                crsr.execute('''
+                INSERT INTO tempSemana(diaMes, diaSemana, climaMax, climaMin, climaTexto, fkLocal) VALUES(?,?,?,?,?,?)
+                ''',dm,ds,max,min,c,fk)
+                cnxn.commit()
+        except pyodbc.Error as err:
+            print(err)
             print('erro no envio')
-else:
+except:
     print('erro')
