@@ -1,9 +1,6 @@
 
-body{
-    margin: 0;
-    background-color: #feb900;
-}
-.card{
+.carda{
+    margin-top: 5%;
     margin-left: 10%;
     width: 800px;
     height: 410px;
@@ -25,16 +22,16 @@ body{
 
 .card_2{
     box-shadow: 2px 3px 10px 1px;
-    width: 650px;
+    width: 800px;
     height: 153px;
     display: flex;
     border-radius: 10px;
     justify-content: center;
     border-radius: 10px;
-    margin-left: 10%;
+    margin-left: 2%;
     background: #f8f8f8;
 }
-.a, .b, .c, .d{
+.a, .b, .c, .d, .g{
     margin-top: 1%;
     width: 162.5px;
     height: 140px;
@@ -43,7 +40,7 @@ body{
     align-items: center;
     font-family: 'Poppins', sans-serif;
 }
-.a,.b,.c{
+.a,.b,.c, .d{
     border-right: 1px #000 solid;
 }
 .e{
@@ -53,21 +50,24 @@ body{
     flex-direction: column;
 }
 .f{
-width: 300px;
-height: 200px;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
+    width: 300px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5%;
 }
 .texto{
-    margin-top: -8%;
-    letter-spacing: 0.2em;
+    margin-top: -35%;
+    margin-right: 50%;
+    letter-spacing: 0.1em;
     font-size: 15px;
     font-family: 'Poppins', sans-serif;
 }
 .img{
-   margin-top: -3%;
+   margin-top: -5%;
+   margin-left: -55%;
 }
 .temp{
     margin-top: 4%;
@@ -86,7 +86,7 @@ justify-content: center;
 }
 .trocar{
     margin-left: 75%;
-    margin-top: -20px;
+    margin-top: 20%;
 }
 
 /*trocar o lugar no css*/

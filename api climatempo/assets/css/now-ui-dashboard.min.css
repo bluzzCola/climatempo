@@ -1265,7 +1265,7 @@ fieldset[disabled] [class*=btn-outline-]:hover {
 .has-success .form-control,
 .has-success .input-group-append .input-group-text,
 .has-success .input-group-prepend .input-group-text {
-    border-color: #e3e3e3
+    border-color: #e3e3e3 
 }
 
 .has-success .form-control:focus,

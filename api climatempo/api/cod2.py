@@ -11,7 +11,7 @@ import textwrap
 import pyodbc
 
 
-accuweatherAPIKey = "sCfra16EjICZsDzpTSNAtDn9Hp3IuuIi"
+accuweatherAPIKey = "xtXMxxNoAQNua16U4M0tVSiGfFZtD3iF"
 mapboxToken = "pk.eyJ1IjoiYXJvbm5pIiwiYSI6ImNsYTczOGZxejBqbnczdmxkNjNuN3Q1bTIifQ.0tBJGc81IZLQopZnQ--cPg"
 # my_date = datetime.today() # if date is 01/01/2018
 # year, week_num, day_of_week = my_date.isocalendar()
@@ -20,7 +20,7 @@ listOfDays = []
 base = datetime.datetime.today()
 for x in range(0, 5):
     nextDay = base + datetime.timedelta(days=x)
-    listOfDays.append(f"{nextDay.day}/{nextDay.month}")
+    listOfDays.append(f"{nextDay.year}/{nextDay.month}/{nextDay.day}")
 
 print(listOfDays[1])
 
@@ -223,7 +223,6 @@ try:
         try:
             for i, data in enumerate(semana):
                 print(i, data)
-                dados = (data['diaMes'],data['diaSemana'],data['max'],data['min'],data['clima'], id[0])
                 dm = data['diaMes']
                 ds = data['diaSemana']
                 max = data['max']

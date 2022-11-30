@@ -16,7 +16,7 @@ function tempLocal(fkLocal){
 
   if (process.env.AMBIENTE_PROCESSO == "producao") {
       instrucaoSql = 
-      `select textoClima, temperatura, fkLugar from tempLocal where idLoc = fkLocal;`;
+      `select TOP 1 textoClima, temperatura, dataHora, (select nomeLocal from lugar where idLoc = ${fkLocal}) as nomeLocal from tempLocal where fkLocal = ${fkLocal} order by idCaptura desc`;
   } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
           instrucaoSql = 
           `select textoClima, temperatura, dataHora, (select nomeLocal from lugar where idLoc = ${fkLocal}) as nomeLocal from tempLocal where fkLocal = ${fkLocal} order by idCaptura desc limit 1`
@@ -30,13 +30,13 @@ function tempLocal(fkLocal){
   return database.executar(instrucaoSql);
 }
 
-function tempSemana(){
+function tempSemana(fkLocal){
     instrucaoSql = ''
 
 
   if (process.env.AMBIENTE_PROCESSO == "producao") {
       instrucaoSql = 
-      `select textoClima, temperatura, fkLugar from tempLocal where idLoc = fkLocal;`;
+      `select top 5 *, convert(varchar,diaMes,113) as datas from [dbo].[tempSemana] where fkLocal = ${fkLocal} order by diaMes asc;`;
   } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
           instrucaoSql = 
           `select * from tempSemana order by fkLocal limit 4;`

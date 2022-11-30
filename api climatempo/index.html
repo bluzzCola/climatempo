@@ -124,7 +124,7 @@
             </div>
             <div class="content">
                 <div class="row">
-                    <div class="card">
+                    <div class="carda">
                         <div class="card_1">
                             <div class="e">
                                 <p class="temp" id="p_temp">
@@ -154,15 +154,14 @@
 
                             </div>
                             <div class="f">
-                                <div class="trocar" >
-                                    <img src="./imagem/Frame (1).png" onclick="obterDadosClima()">
-                                </div>
-                                <p class="texto" id="climatexto">
+                                <img src="./imagem/Frame (1).png" style="margin-left: 75%;" onclick="obterDadosClima()">
+                                <p class="texto" id="climatexto" style="text-align:center">
                                     Chuvoso
                                 </p>
                                 <span class="img">
-                                    <img id="imgClima" src="" height="90">
+                                    <img id="imgClima" src="" >
                                 </span>
+                                
                             </div>
 
 
@@ -183,6 +182,9 @@
                             </div>
                             <div class="d" >
                                <p id="div_d">Terça-Feira</p> 
+                            </div>
+                            <div class="g">
+                                <p id="div_g">Quarta-Feira</p>
                             </div>
                         </div>
                     </div>
@@ -316,13 +318,14 @@
                         
                     });
 
-                   console.log(resposta.diaSemana)
+                   console.log("AAAAAAAAAA",resposta[0].diaSemana)
                     
 
-                    // div_a.innerHTML = semana[i];
-                    // div_b.innerHTML = resposta.diaSemana;
-                    // div_c.innerHTML = resposta.diaSemana;
-                    // div_d.innerHTML = resposta.diaSemana;
+                    div_a.innerHTML = resposta[0].diaSemana;
+                    div_b.innerHTML = resposta[1].diaSemana;
+                    div_c.innerHTML = resposta[2].diaSemana;
+                    div_d.innerHTML = resposta[3].diaSemana;
+                    div_g.innerHTML = resposta[4].diaSemana;
                  })
             } else{
                 console.error('Nenhum dado encontrado ou erro na API');
@@ -353,10 +356,16 @@
                     climatexto.innerHTML = resposta.textoClima;
 
                     if (resposta.textoClima == "Chuvoso") {
-                        imgClima.src = "./imagem/rain_cloud_forecast_weather_temperature_icon_194372 1.png";
+                        imgClima.src = "./imagem/chuvoso.png";
                     }
-                    if (resposta.textoClima == "Ensolarado") {
+                    if (resposta.textoClima == "Ensolarado" ) {
                         imgClima.src = "./imagem/ensolarado.png";
+                    }
+                    if(resposta.textoClima == "Predominantemente nublado, com tempestades" || resposta.textoClima == "Tempestades"){
+                        imgClima.src = "./imagem/chuvoso.png";
+                    }
+                    if(resposta.textoClima == "Parcialmente ensolarado"){
+                        imgClima.src = "./imagem/parcialmente_sol.png"
                     }
 
                     // plotarGrafico(resposta, fkLugar);
