@@ -86,7 +86,7 @@
 }
 .trocar{
     margin-left: 75%;
-    margin-top: 20%;
+    position: relative;
 }
 
 /*trocar o lugar no css*/
